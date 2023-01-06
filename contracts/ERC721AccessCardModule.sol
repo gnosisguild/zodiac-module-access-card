@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-3.0-only
-pragma solidity 0.8.7;
+pragma solidity 0.8.9;
 
 import "@gnosis.pm/zodiac/contracts/core/Module.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -39,7 +39,7 @@ contract ERC721AccessCardModule is Module {
         setUp(initParams);
     }
 
-    function setUp(bytes memory initParams) public override {
+    function setUp(bytes memory initParams) public override initializer {
         (address _owner, address _avatar, address _target, AccessCard memory _accessCard) = abi.decode(
             initParams,
             (address, address, address, AccessCard)

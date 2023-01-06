@@ -11,7 +11,7 @@ import "hardhat-deploy"
 dotenv.config()
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.7",
+  solidity: "0.8.9",
   networks: {
     goerli: {
       url: process.env.GOERLI_URL || "",
