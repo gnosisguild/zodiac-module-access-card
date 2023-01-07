@@ -16,7 +16,7 @@ contract AccessCard is ERC721, ERC721Burnable, Ownable, EIP712, ERC721Votes {
     constructor() ERC721("Zodiac Access Card", "CARD") EIP712("Zodiac Access Card", "0") {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "{put in a URI}";
+        return "TODO: put in a URI";
     }
 
     /// @dev Allows anyone to mint a new access card.

@@ -5,10 +5,10 @@ const setup = async () => {
   const [wallet] = await ethers.getSigners()
   const Avatar = await ethers.getContractFactory("TestAvatar")
   const avatar = await Avatar.deploy()
-  const AccessCard = await ethers.getContractFactory("AccessCard")
+  const AccessCard = await ethers.getContractFactory("TestERC1155Token")
   const accessCard = await AccessCard.deploy()
-  await accessCard.safeMint(wallet.address)
-  const Module = await ethers.getContractFactory("ERC721AccessCardModule")
+  await accessCard.mint(wallet.address, 0, 1, "0x")
+  const Module = await ethers.getContractFactory("ERC1155AccessCardModule")
   const ac = {
     tokenContract: accessCard.address,
     tokenId: 0,
@@ -22,7 +22,7 @@ const setup = async () => {
   return { avatar, accessCard, module, Module, ac, wallet, calldata }
 }
 
-describe("ERC721AccessCardModule", function () {
+describe("ERC1155AccessCardModule", function () {
   describe("Constructor", function () {
     it("Should initialize variables", async function () {
       const { avatar, module, ac } = await setup()
@@ -37,7 +37,7 @@ describe("ERC721AccessCardModule", function () {
   describe("executeTransaction()", function () {
     it("Should revert if msg.sender does not hold access card", async function () {
       const { avatar, calldata, accessCard, module, wallet } = await setup()
-      await accessCard.transferFrom(wallet.address, avatar.address, 0)
+      await accessCard.safeTransferFrom(wallet.address, avatar.address, 0, 1, "0x")
       await expect(module.executeTransaction(avatar.address, 0, calldata, 0)).to.be.revertedWith("AccessDenied()")
     })
     it("Should execute transaction sent by access card holder", async function () {
