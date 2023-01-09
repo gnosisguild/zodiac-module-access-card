@@ -1,4 +1,4 @@
-![Access Card](AccessCard.png)
+![Access Card](AccessCard.jpg)
 # Zodiac Access Card Module
 
 [![Build Status](https://github.com/gnosis/zodiac-module-access-card/actions/workflows/ci.yml/badge.svg)](https://github.com/gnosis/zodiac-module-access-card/actions/workflows/ci.yml)
