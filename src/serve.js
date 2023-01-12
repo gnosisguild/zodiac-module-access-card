@@ -1,37 +1,40 @@
-const http = require('http');
-const EventEmitter = require('events');
+const http = require("http")
+const EventEmitter = require("events")
 
 async function serve(handler) {
-  const events = new EventEmitter();
+  const events = new EventEmitter()
 
   function requestListener(req, res) {
-    if (req.url === '/changes') {
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.writeHead(200);
-      const sendEvent = () => res.write('event: change\ndata:\n\n');
-      events.on('change', sendEvent);
-      req.on('close', () => events.off('change', sendEvent));
-      return;
+    if (req.url === "/changes") {
+      res.setHeader("Content-Type", "text/event-stream")
+      res.writeHead(200)
+      const sendEvent = () => res.write("event: change\ndata:\n\n")
+      events.on("change", sendEvent)
+      req.on("close", () => events.off("change", sendEvent))
+      return
     }
 
-    if (req.url === '/') {
-      res.writeHead(200);
+    if (req.url === "/") {
+      res.writeHead(200)
       handler().then(
         (content) => res.end(webpage(content)),
-        (error) => res.end(webpage(`<pre>${error.message}</pre>`))
-      );
-      return;
+        (error) => {
+          console.log(error)
+          return res.end(webpage(`<pre>${error.message}</pre>`))
+        },
+      )
+      return
     }
 
-    res.writeHead(404);
-    res.end('Not found: ' + req.url);
+    res.writeHead(404)
+    res.end("Not found: " + req.url)
   }
-  const server = http.createServer(requestListener);
-  await new Promise((resolve) => server.listen(9901, resolve));
+  const server = http.createServer(requestListener)
+  await new Promise((resolve) => server.listen(9901, resolve))
 
   return {
-    notify: () => events.emit('change'),
-  };
+    notify: () => events.emit("change"),
+  }
 }
 
 const webpage = (content) => `
@@ -43,6 +46,6 @@ const sse = new EventSource('/changes');
 sse.addEventListener('change', () => window.location.reload());
 </script>
 </html>
-`;
+`
 
-module.exports = serve;
+module.exports = serve
