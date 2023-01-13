@@ -27,7 +27,7 @@ const setup = async () => {
   return { svg, wallet }
 }
 
-describe("Blockies", function () {
+describe("Blockies Svg", function () {
   describe("renderBlockie()", function () {
     it("Should return an SVG string", async function () {
       const { svg, wallet } = await setup()
