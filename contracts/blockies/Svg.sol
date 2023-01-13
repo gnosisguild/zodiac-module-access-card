@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.17;
 
-import "./Strings.sol";
+import "./StringTools.sol";
 import "./Random.sol";
 import "./ImageMap.sol";
 
@@ -54,8 +54,8 @@ contract Svg {
                     className = color2ClassName;
                 }
                 lastColorType = colorType;
-                string memory xPos = Strings.itoa(colIdx * 10, 10);
-                string memory yPos = Strings.itoa(rowIdx * 10, 10);
+                string memory xPos = StringTools.itoa(colIdx * 10, 10);
+                string memory yPos = StringTools.itoa(rowIdx * 10, 10);
                 currentPath = string.concat(pathStart, className, dStart, xPos, " ", yPos, " ", 'h10"', "/>");
 
                 paths = string.concat(paths, currentPath);
@@ -65,7 +65,7 @@ contract Svg {
         return paths;
     }
 
-    function generateSvg(bytes memory seed) external pure returns (string memory) {
+    function generateSvg(bytes memory seed) public pure returns (string memory) {
         // Generate color data, image mapping and random data based on seed
         uint16[] memory randomData = Random.generateData(seed);
         uint8[] memory imageMap = ImageMap.generateImageMap(randomData);

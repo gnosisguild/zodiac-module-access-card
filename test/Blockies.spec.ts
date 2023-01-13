@@ -3,8 +3,8 @@ import { ethers } from "hardhat"
 
 const setup = async () => {
   const [wallet] = await ethers.getSigners()
-  const Strings = await ethers.getContractFactory("contracts/blockies/Strings.sol:Strings")
-  const strings = await Strings.deploy()
+  const StringTools = await ethers.getContractFactory("StringTools")
+  const stringTools = await StringTools.deploy()
   const ImageMap = await ethers.getContractFactory("ImageMap")
   const imageMap = await ImageMap.deploy()
   const Color = await ethers.getContractFactory("Color")
@@ -12,13 +12,13 @@ const setup = async () => {
   const Random = await ethers.getContractFactory("Random", {
     libraries: {
       Color: color.address,
-      Strings: strings.address,
+      StringTools: stringTools.address,
     },
   })
   const random = await Random.deploy()
   const Svg = await ethers.getContractFactory("Svg", {
     libraries: {
-      Strings: strings.address,
+      StringTools: stringTools.address,
       ImageMap: imageMap.address,
       Random: random.address,
     },

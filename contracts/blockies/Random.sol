@@ -3,7 +3,7 @@
 pragma solidity ^0.8.2;
 
 import "./Color.sol";
-import "./Strings.sol";
+import "./StringTools.sol";
 
 library Random {
     function generateColorBytes(uint16[] memory random, uint8 idx) public pure returns (uint8[3] memory) {
@@ -27,7 +27,7 @@ library Random {
         colorBytesMerged[0] = bytes1(colorBytes[0]);
         colorBytesMerged[1] = bytes1(colorBytes[1]);
         colorBytesMerged[2] = bytes1(colorBytes[2]);
-        return Strings.hexStringFromBytes(colorBytesMerged);
+        return StringTools.hexStringFromBytes(colorBytesMerged);
     }
 
     function generateData(bytes memory seed) public pure returns (uint16[] memory) {

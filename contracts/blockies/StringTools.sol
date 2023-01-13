@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.17;
 
-library Strings {
+library StringTools {
     /**
      * Search for a needle in a haystack
      *

@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 // Core utils used extensively to format CSS and numbers.
 library utils {
@@ -32,12 +32,7 @@ library utils {
     }
 
     // formats generic rgba color in css
-    function rgba(
-        uint256 _r,
-        uint256 _g,
-        uint256 _b,
-        uint256 _a
-    ) internal pure returns (string memory) {
+    function rgba(uint256 _r, uint256 _g, uint256 _b, uint256 _a) internal pure returns (string memory) {
         string memory formattedA = _a < 100 ? string.concat("0.", utils.uint2str(_a)) : "1";
         return
             string.concat(
@@ -102,7 +97,7 @@ library utils {
     function toAsciiString(address x) internal pure returns (string memory) {
         bytes memory s = new bytes(40);
         for (uint256 i = 0; i < 20; i++) {
-            bytes1 b = bytes1(uint8(uint256(uint160(x)) / (2**(8 * (19 - i)))));
+            bytes1 b = bytes1(uint8(uint256(uint160(x)) / (2 ** (8 * (19 - i)))));
             bytes1 hi = bytes1(uint8(b) / 16);
             bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
             s[2 * i] = char(hi);
