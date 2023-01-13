@@ -6,11 +6,7 @@ import "./SVG.sol";
 import "./Utils.sol";
 
 contract Renderer {
-    function render(
-        uint256 tokenId,
-        address holderAddress,
-        address tokenAddress
-    ) public pure returns (string memory) {
+    function render(uint256 tokenId, address holderAddress, address tokenAddress) public pure returns (string memory) {
         return
             string.concat(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700" viewBox="0 0 2700 2700" fill="none">',
@@ -39,11 +35,7 @@ contract Renderer {
             );
     }
 
-    function text(
-        uint256 tokenId,
-        address holderAddress,
-        address tokenAddress
-    ) internal pure returns (string memory) {
+    function text(uint256 tokenId, address holderAddress, address tokenAddress) internal pure returns (string memory) {
         return
             string.concat(
                 '<text x="1350" y="390.815">Access Card</text>',

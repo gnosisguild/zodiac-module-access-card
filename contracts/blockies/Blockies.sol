@@ -9,18 +9,18 @@ pragma solidity 0.8.17;
 /// If you are interested in multiple blockies, you can also call `emitMultipleSelfTransferEvents` for ~ 21000 + ~ 5000 gas per blocky.
 /// @title On-chain Blockies
 contract Blockies {
-    bytes internal constant SVG_TEMPLATE =
+    bytes public constant SVG_TEMPLATE =
         "<svg xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges' width='512' height='512'><g transform='scale(64)'><path fill='hsl(000,000%,000%)' d='M0,0h8v8h-8z'/><path fill='hsl(000,000%,000%)' d='M0,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1z'/><path fill='hsl(000,000%,000%)' d='M0,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm-8,1m1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1zm1,0h1v0h-1z'/></g></svg>";
 
-    uint256 internal constant COLOR_BG_POS = 168;
+    uint256 public constant COLOR_BG_POS = 168;
 
-    uint256 internal constant COLOR_1_POS = 222;
-    uint256 internal constant PATH_1_POS = COLOR_1_POS + 18;
+    uint256 public constant COLOR_1_POS = 222;
+    uint256 public constant PATH_1_POS = COLOR_1_POS + 18;
 
-    uint256 internal constant COLOR_2_POS = 1067;
-    uint256 internal constant PATH_2_POS = COLOR_2_POS + 18;
+    uint256 public constant COLOR_2_POS = 1067;
+    uint256 public constant PATH_2_POS = COLOR_2_POS + 18;
 
-    bytes internal constant hexAlphabet = "0123456789abcdef";
+    bytes public constant hexAlphabet = "0123456789abcdef";
 
     struct Seed {
         int32 s0;
@@ -29,14 +29,15 @@ contract Blockies {
         int32 s3;
     }
 
-    function _writeUint(bytes memory data, uint256 endPos, uint256 num) internal pure {
+    function _writeUint(bytes memory data, uint256 endPos, uint256 num) public pure returns (bytes memory) {
         while (num != 0) {
             data[endPos--] = bytes1(uint8(48 + (num % 10)));
             num /= 10;
         }
+        return data;
     }
 
-    function _seedrand(bytes memory seed) internal pure returns (Seed memory randseed) {
+    function _seedrand(bytes memory seed) public pure returns (Seed memory randseed) {
         unchecked {
             for (uint256 i = 0; i < seed.length; i++) {
                 uint8 j = uint8(i % 4);
@@ -53,7 +54,7 @@ contract Blockies {
         }
     }
 
-    function _rand(Seed memory randseed) internal pure returns (uint256 rnd) {
+    function _rand(Seed memory randseed) public pure returns (uint256 rnd) {
         unchecked {
             int32 t = randseed.s0 ^ int32(randseed.s0 << 11);
             randseed.s0 = randseed.s1;
@@ -64,7 +65,7 @@ contract Blockies {
         }
     }
 
-    function _randhsl(Seed memory randseed) internal pure returns (uint16 hue, uint8 saturation, uint8 lightness) {
+    function _randhsl(Seed memory randseed) public pure returns (uint16 hue, uint8 saturation, uint8 lightness) {
         unchecked {
             // saturation is the whole color spectrum
             hue = uint16(((_rand(randseed) * 360) / 2147483648));
@@ -77,7 +78,7 @@ contract Blockies {
         }
     }
 
-    function _setColor(bytes memory metadata, Seed memory randseed, uint8 i) internal pure {
+    function _setColor(bytes memory metadata, Seed memory randseed, uint8 i) public pure returns (bytes memory) {
         (uint16 hue, uint8 saturation, uint8 lightness) = _randhsl(randseed);
         uint256 pos = COLOR_BG_POS;
         if (i == 1) {
@@ -85,28 +86,30 @@ contract Blockies {
         } else if (i == 2) {
             pos = COLOR_2_POS;
         }
-        _writeUint(metadata, pos + 0, hue);
-        _writeUint(metadata, pos + 4, saturation);
-        _writeUint(metadata, pos + 9, lightness);
+        metadata = _writeUint(metadata, pos + 0, hue);
+        metadata = _writeUint(metadata, pos + 4, saturation);
+        metadata = _writeUint(metadata, pos + 9, lightness);
+        return metadata;
     }
 
-    function _writeUintAsHex(bytes memory data, uint256 endPos, uint256 num) internal pure {
+    function _writeUintAsHex(bytes memory data, uint256 endPos, uint256 num) public pure returns (bytes memory) {
         while (num != 0) {
             data[endPos--] = bytes1(hexAlphabet[num % 16]);
             num /= 16;
         }
+        return data;
     }
 
-    function _addressToString(address who) internal pure returns (string memory) {
+    function _addressToString(address who) public pure returns (string memory) {
         bytes memory addr = "0x0000000000000000000000000000000000000000";
-        _writeUintAsHex(addr, 41, uint160(who));
+        addr = _writeUintAsHex(addr, 41, uint160(who));
         return string(addr);
     }
 
-    function _setPixel(bytes memory metadata, uint256 x, uint256 y, uint8 color) internal pure {
+    function _setPixel(bytes memory metadata, uint256 x, uint256 y, uint8 color) public pure returns (bytes memory) {
         uint256 pathPos = 0;
         if (color == 0) {
-            return;
+            return metadata;
         }
         if (color == 1) {
             pathPos = PATH_1_POS;
@@ -115,6 +118,7 @@ contract Blockies {
         }
         uint256 pos = pathPos + y * 5 + (y * 8 + x) * 12 + 8;
         metadata[pos] = "1";
+        return metadata;
     }
 
     function renderSVG(address who) public pure returns (string memory) {
@@ -122,9 +126,9 @@ contract Blockies {
 
         Seed memory randseed = _seedrand(bytes(_addressToString(who)));
 
-        _setColor(svg, randseed, 1);
-        _setColor(svg, randseed, 0);
-        _setColor(svg, randseed, 2);
+        svg = _setColor(svg, randseed, 1);
+        svg = _setColor(svg, randseed, 0);
+        svg = _setColor(svg, randseed, 2);
 
         for (uint256 y = 0; y < 8; y++) {
             uint8 p0 = uint8((_rand(randseed) * 23) / 2147483648 / 10);
@@ -132,14 +136,14 @@ contract Blockies {
             uint8 p2 = uint8((_rand(randseed) * 23) / 2147483648 / 10);
             uint8 p3 = uint8((_rand(randseed) * 23) / 2147483648 / 10);
 
-            _setPixel(svg, 0, y, p0);
-            _setPixel(svg, 1, y, p1);
-            _setPixel(svg, 2, y, p2);
-            _setPixel(svg, 3, y, p3);
-            _setPixel(svg, 4, y, p3);
-            _setPixel(svg, 5, y, p2);
-            _setPixel(svg, 6, y, p1);
-            _setPixel(svg, 7, y, p0);
+            svg = _setPixel(svg, 0, y, p0);
+            svg = _setPixel(svg, 1, y, p1);
+            svg = _setPixel(svg, 2, y, p2);
+            svg = _setPixel(svg, 3, y, p3);
+            svg = _setPixel(svg, 4, y, p3);
+            svg = _setPixel(svg, 5, y, p2);
+            svg = _setPixel(svg, 6, y, p1);
+            svg = _setPixel(svg, 7, y, p0);
         }
 
         return string(svg);
