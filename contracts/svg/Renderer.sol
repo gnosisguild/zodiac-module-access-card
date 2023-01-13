@@ -2,23 +2,19 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "./SVG.sol";
-import "./Utils.sol";
 import "./Blockies.sol";
+import "./ZodiacBadge.sol";
 
 contract Renderer {
-    function render(
-        uint256 tokenId,
-        address holderAddress,
-        address tokenAddress
-    ) public pure returns (string memory) {
+    function render(uint256 tokenId, address holderAddress, address tokenAddress) public pure returns (string memory) {
         return
             string.concat(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700" viewBox="0 0 2700 2700" fill="none">',
-                "<style>.rect {fill: #D9D4AD;fill-opacity: 0.01;stroke: #D9D4AD;stroke-opacity: 0.3;stroke-width: 5;}.textRect {fill-opacity: 0.1}.textMedium {font-size: 96px;}.textSmall {font-size: 50px;}.mono {font-family: monospace;}text {fill: white;white-space: pre;letter-spacing: 0;font-family: sans-serif;font-size: 150px;text-anchor: middle;}.textDim {fill: #D9D4AD;fill-opacity: 0.5;}.address {animation: slide 14s steps(150) infinite;text-anchor: start;}@keyframes slide {100% {transform: translateX(-5150px)}}.bgBlend {mix-blend-mode: color-dodge;}</style>",
+                "<style>.rect {fill: #D9D4AD;fill-opacity: 0.01;stroke: #D9D4AD;stroke-opacity: 0.3;stroke-width: 5;}.textRect {fill-opacity: 0.1}.textMedium {font-size: 96px;}.textSmall {font-size: 50px;}.mono {font-family: monospace;}text {fill: white;white-space: pre;letter-spacing: 0;font-family: sans-serif;font-size: 150px;text-anchor: middle;}.textDim {fill: #D9D4AD;fill-opacity: 0.5;}.address {animation: slide 14s steps(150) infinite;text-anchor: start;}@keyframes slide {100% {transform: translateX(-5150px)}}.bgBlend {mix-blend-mode: color-dodge;}.i{mix-blend-mode:screen; opacity:0.8}.z{opacity:0.6}</style>",
                 rectangles(),
                 text(tokenId, holderAddress, tokenAddress),
                 blockie(holderAddress),
+                badge(),
                 defs(),
                 "</svg>"
             );
@@ -40,17 +36,13 @@ contract Renderer {
             );
     }
 
-    function text(
-        uint256 tokenId,
-        address holderAddress,
-        address tokenAddress
-    ) internal pure returns (string memory) {
+    function text(uint256 tokenId, address holderAddress, address tokenAddress) internal pure returns (string memory) {
         return
             string.concat(
                 '<text x="1350" y="390.815">Access Card</text>',
                 '<text class="textDim textMedium" x="886" y="2088.27">Owner</text>',
                 '<text class="textMedium mono" x="1726.5" y="734.712">',
-                utils.uint2str(tokenId),
+                uint2str(tokenId),
                 "</text>",
                 '<text class="textDim textSmall mono" x="1352" y="1008.37">',
                 Strings.toHexString(uint160(tokenAddress), 20),
@@ -82,9 +74,41 @@ contract Renderer {
     function blockie(address holderAddress) internal pure returns (string memory) {
         return
             string.concat(
-                '<image x="1390" y="1204.37" width="610" height="610" href="',
+                '<image class="i" x="1390" y="1204.37" width="610" height="610" href="',
                 Blockies.renderSVG(holderAddress),
                 '"/>'
             );
+    }
+
+    function badge() internal pure returns (string memory) {
+        return
+            string.concat(
+                '<image class="z" x="700" y="623" width="150" height="150" href="',
+                ZodiacBadge.renderSVG(),
+                '"/>'
+            );
+    }
+
+    // converts an unsigned integer to a string
+    function uint2str(uint256 _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint256 j = _i;
+        uint256 len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint256 k = len;
+        while (_i != 0) {
+            k = k - 1;
+            uint8 temp = (48 + uint8(_i - (_i / 10) * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
     }
 }
