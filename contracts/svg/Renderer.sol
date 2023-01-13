@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./SVG.sol";
 import "./Utils.sol";
-import "../blockies/Blockies.sol";
+import "./Blockies.sol";
 
 contract Renderer {
     function render(
