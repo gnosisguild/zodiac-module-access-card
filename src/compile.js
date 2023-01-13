@@ -1,6 +1,7 @@
 const fs = require("fs")
 const path = require("path")
 const solc = require("solc")
+var linker = require("solc/linker")
 
 function getSolcInput(source) {
   return {
@@ -35,7 +36,7 @@ function findImports(path) {
   }
 }
 
-function compile(source) {
+function compile(source, libraries = {}) {
   const input = getSolcInput(source)
   process.chdir(path.dirname(source))
   const output = JSON.parse(solc.compile(JSON.stringify(input), { import: findImports }))
@@ -56,9 +57,11 @@ function compile(source) {
 
   const result = output.contracts[path.basename(source)]
   const contractName = Object.keys(result)[0]
+
+  const bytecode = linker.linkBytecode(result[contractName].evm.bytecode.object, libraries)
   return {
     abi: result[contractName].abi,
-    bytecode: result[contractName].evm.bytecode.object,
+    bytecode,
   }
 }
 
